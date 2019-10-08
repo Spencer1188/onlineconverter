@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Unbenanntes Dokument</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link href="assets/css/my.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="row" style="height: 100vh; padding-top: 60px;">
+	<div class="col-lg-3 col-sm-12">
+		<p>Bearbeiten</p>
+	</div>
+	<div class="col-lg-6 col-sm-12">
+		<div class="box">
+		  <input type="file" name="datei" id="main"></input>
+		  <p>Drag your files here or click in this area.</p>
+		  <button onClick="readfile()">Upload</button>
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-12">
+		<h1>Online Converter</h1>
+		<p><b>major_brand: </b><span id="majorbrand"></span></p>
+		<p><b>minor-version: </b><span id="minorversion"></span></p>
+		<p><b>compatible_brands: </b><span id="compatiblebrands"></span></p>
+		<p><b>encoder: </b><span id="encoder"></span></p>
+		<br>
+		<p><b>duration: </b><span id="duration"></span></p>
+		<p><b>bitrate: </b><span id="bitrate"></span></p>
+		<p><b>format: </b><span id="format"></span></p>
+	</div>
+</div>
+</body>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="assets/js/read.js"></script>
+	<script>
+		readvideodata();
+	
+		function readfile(){
+			var file_data = $('#main').prop('files')[0];   
+			var form_data = new FormData();                  
+			form_data.append('file', file_data);                            
+			$.ajax({
+				url: 'assets/php/upload.php', // point to server-side PHP script 
+				dataType: 'text',  // what to expect back from the PHP script, if anything
+				cache: false,
+				contentType: false,
+				processData: false,
+				data: form_data,                        
+				type: 'post',
+				success: function(data){
+					if(data == "ok"){
+					   M.toast({html: "Erfolgreich hochgeladen!"})
+						$("#pre-loader").load('php/get_pic_ins.php');
+						readvideodata();
+					}else{
+						alert(data);
+					}
+				}
+			 });
+		}
+	</script>
+</html>
